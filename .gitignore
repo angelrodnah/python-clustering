@@ -1,5 +1,12 @@
-# Data
-datasets_all
+# Data and local purposes
+nbs
+docker
+
+# Project Notes
+notes
+
+# Reference
+seaborn-0.11.2
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -12,6 +19,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 build/
+current_prod/
 develop-eggs/
 dist/
 downloads/
