@@ -2,18 +2,19 @@ from typing import List
 from utilities import read_utilities
 
 
-class Clustering:
+class Dataset:
     def __init__(self) -> None:
         pass
 
-    def load_dataset(dataset_name: str, load_description=False):
+    def load(dataset_name: str, load_description=False):
         return read_utilities.load(dataset_name, load_description)
 
-    def download_dataset(dataset_name: str):
+    def download(dataset_names: str or List):
         pass
 
-    def download_datasets(dataset_name_list: List):
+    def list():
         pass
 
-    def list_datasets():
+class Methods:
+    def __init__(self) -> None:
         pass
