@@ -45,3 +45,14 @@ class Methods:
 
     def Birch(*args):
         return Birch(args)
+
+
+class Tasks:
+    def __init__():
+        pass
+
+    def AnomalyDetection():
+        pass
+
+    def define_number_of_clusters():
+        pass
