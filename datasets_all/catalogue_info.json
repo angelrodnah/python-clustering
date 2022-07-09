@@ -1,6 +1,7 @@
 {
-    "PATH_TO_ALL_DATASETS_FOLDER" : "./../datasets_all",
-    "PATH_TO_GITHUB" : "https://github.com/IvanReznikov/python-clustering/blob/main/datasets_all",
+    "PATH_TO_ALL_DATASETS_FOLDER" : "./datasets_all",
+    "PATH_TO_LOCAL" : "./python_clustering/datasets",
+    "PATH_TO_GITHUB" : "https://github.com/IvanReznikov/python-clustering/raw/main/datasets_all",
     "SUBFOLDERS" : ["real","artificial"],
     "COLUMN_NAMES" : [
         "name",
