@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
     name="python_clustering",
     packages=["python_clustering"],
-    version="1.0.0",
+    version="1.0.1",
     license="MIT",
     description="Intuitive access to clustering datasets and methods",
     author="ce1ebi",
