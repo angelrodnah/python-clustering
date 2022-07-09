@@ -66,3 +66,7 @@ def string_handling(
             _dummies.columns = [f"{col}_{value}" for value in _dummies.columns]
             df = pd.concat([df, _dummies], axis=1).drop([col], axis=1)
     return df
+
+
+if __name__ == "__main__":
+    pass

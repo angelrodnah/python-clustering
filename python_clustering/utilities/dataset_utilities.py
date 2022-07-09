@@ -1,7 +1,7 @@
 from scipy import stats
 from statistics import NormalDist
 import numpy as np
-import read_utilities
+from . import read_utilities
 
 
 class Dataset:
@@ -118,3 +118,7 @@ class Dataset:
                 .sum()
                 / self.number_of_datapoint
             )
+
+
+if __name__ == "__main__":
+    pass
