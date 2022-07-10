@@ -10,7 +10,15 @@ class Dataset:
     def __init__(self) -> None:
         pass
 
-    def load(dataset_name: str, load_description=False):
+    def load(self, dataset_name: str, load_description=False, download=False):
+        '''
+        Load a specific dataset from local
+        '''
+        if dataset_name not in self.list():
+            if download == True:
+                self.download(dataset_name)
+            else:
+                print("Dataset isn't present in local environment. To allow downloading, specify load(download=True)")
         return read_utilities.load(dataset_name, load_description)
 
     def download(dataset_names: str or List, overwrite=False):
@@ -51,8 +59,18 @@ class Tasks:
     def __init__():
         pass
 
-    def AnomalyDetection():
+    def AnomalyDetection(dataset):
+        '''
+        Detect anomalies in the passed dataset
+        '''
         pass
 
-    def define_number_of_clusters():
+    def calculate_number_of_clusters(dataset):
+        '''
+        Calculater the number of clusters in the passed dataset
+        '''
+        pass
+
+    def cluster_ensembling(dataset, methods = ['kmeans', 'gmm', 'dbscan']):
+        '''Provide cluster ensempling'''
         pass

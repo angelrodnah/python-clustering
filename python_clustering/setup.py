@@ -1,4 +1,5 @@
 from distutils.core import setup
+import setuptools
 
 setup(
     name="python_clustering",
@@ -22,4 +23,6 @@ setup(
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
     ],
+    package_dir = {"": "src"},
+    packages = setuptools.find_packages(where="src"),
 )
