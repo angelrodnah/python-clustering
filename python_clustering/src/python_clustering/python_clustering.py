@@ -74,3 +74,7 @@ class Tasks:
     def cluster_ensembling(dataset, methods = ['kmeans', 'gmm', 'dbscan']):
         '''Provide cluster ensempling'''
         pass
+
+    def cluster_cimilarity(dataset, method='knn', nearest_neighbors=3):
+        '''Provides similar known datasets to provided one using knn'''
+        pass

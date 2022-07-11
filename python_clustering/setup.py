@@ -1,28 +1,4 @@
-from distutils.core import setup
-import setuptools
+from setuptools import setup
 
-setup(
-    name="python_clustering",
-    packages=["python_clustering"],
-    version="1.0.1",
-    license="MIT",
-    description="Intuitive access to clustering datasets and methods",
-    author="ce1ebi",
-    author_email="ivanreznikov@gmail.com",
-    url="",
-    download_url="",
-    keywords=["clustering", "datasets"],
-    install_requires=[],
-    classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Intended Audience :: Developers",
-        "Topic :: Software Development :: Build Tools",
-        "License :: OSI Approved :: MIT License",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
-    ],
-    package_dir = {"": "src"},
-    packages = setuptools.find_packages(where="src"),
-)
+if __name__ == '__main__':
+    setup()
