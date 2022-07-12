@@ -1,9 +1,9 @@
 {
-    "PATH_TO_ALL_DATASETS_FOLDER" : "./datasets_all",
-    "PATH_TO_LOCAL" : "./python_clustering/datasets",
+    "PATH_TO_ALL_DATASETS_FOLDER" : "./../../datasets_all",
+    "PATH_TO_LOCAL" : "datasets",
     "PATH_TO_GITHUB" : "https://github.com/IvanReznikov/python-clustering/raw/main/datasets_all",
     "SUBFOLDERS" : ["real","artificial"],
-    "COLUMN_NAMES" : [
+    "COLUMN_PROPERTY_NAMES" : [
         "name",
         "origin",
         "is_imbalanced",
@@ -15,5 +15,9 @@
         "estimated_max_overlap",
         "estimated_mean_overlap",
         "missing_values_proportion"
+    ],
+    "ROOT_PROPERTY_NAMES":
+    [
+        "name", "origin", "filetype", "local_filepath", "github_filepath", "description"
     ]
 }
