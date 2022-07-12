@@ -2,7 +2,8 @@
 nbs
 docker
 
-
+# local testing
+test_package
 tests.py
 
 # Project Notes
