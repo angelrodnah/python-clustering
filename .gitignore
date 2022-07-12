@@ -3,8 +3,12 @@ nbs
 docker
 
 # local testing
-test_package
-tests.py
+tests/*.tar.gz
+tests/notes
+tests/bin
+tests/env_1
+tests/env_2
+tests/env_3
 
 # Project Notes
 notes
