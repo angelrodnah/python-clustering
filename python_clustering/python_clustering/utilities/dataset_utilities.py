@@ -6,9 +6,12 @@ from . import read_utilities
 
 class Dataset:
     def __init__(self, dataset_name, path) -> None:
-        self.name = dataset_name[:-5]
-        self.pd_dataframe, self.description = read_utilities.load(
-            self.name, load_description=True
+        self.name = dataset_name.split(".")[-2]
+        self.pd_dataframe = read_utilities.load(
+            self.name, path=f"{path}/{dataset_name}"
+        )
+        self.description = read_utilities.load_description(
+            self.name, path=f"{path}/{dataset_name}"
         )
         self.origin = path.split("/")[-1]
         self.classes = (
@@ -99,8 +102,12 @@ class Dataset:
                 / self.number_of_datapoint
                 > binary_alpha
             )
-        _, p = stats.shapiro(self.pd_dataframe["class"].value_counts().to_list())
-        return p < shapiro_alpha
+        class_frequency = self.pd_dataframe["class"].value_counts().to_list()
+        if [class_frequency[0]] * self.number_of_clusters == class_frequency:
+            return False
+        else:
+            _, p = stats.shapiro(class_frequency)
+            return p < shapiro_alpha
 
     def calculate_number_of_outliers(self, number_of_std=2):
         if self.number_of_clusters > 1:

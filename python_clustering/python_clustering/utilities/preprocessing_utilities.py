@@ -1,10 +1,16 @@
 import pandas as pd
 
 
-def preprocessing(df):
+def preprocessing(df: pd.DataFrame) -> pd.DataFrame:
     """
     Preprocessing pipeline for cluster dataframe.
-    Includes handlic strings and numeric values
+    Includes handlic strings and numeric values.
+
+    Args:
+        df: pd.DataFrame - raw dataset
+
+    Return:
+        df: pd.DataFrame - preprocessed pandas dataFrame
     """
     df = df.apply(pd.to_numeric, errors="ignore")
     df = string_handling(df)
@@ -12,7 +18,16 @@ def preprocessing(df):
     return df
 
 
-def numeric_handling(df):
+def numeric_handling(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Numeric handling method. Converting string to numeric where possible
+
+    Args:
+        df - pd.DataFrame: cluster dataframe
+
+    Return:
+        df - pd.DataFrame: modified cluster dataframe
+    """
     numeric_df = df.apply(pd.to_numeric, errors="coerce")
     numeric_series = numeric_df.isnull().all()
     numeric_df = numeric_df[numeric_series[~numeric_series].index]
