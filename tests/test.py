@@ -1,10 +1,11 @@
 import python_clustering
 
+
 def main():
     print(dir(python_clustering))
     dataset = python_clustering.Dataset()
-    dataset_list = ['atom', 'D31', 'cpu', 'banana', 'gaussians1', 'circle']
-    #assert(dataset.list() == dataset_list)
+    dataset_list = ["atom", "D31", "cpu", "banana", "gaussians1", "circle"]
+    # assert(dataset.list() == dataset_list)
     data = dataset.load("D31")
     print(data.shape)
     data = dataset.load("D3aa1")
@@ -21,6 +22,4 @@ def main():
     dataset.update_local_info_files()
 
 
-
 main()
-
