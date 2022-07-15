@@ -1,20 +1,16 @@
 # Data and local purposes
-nbs
-docker
+draft_notebooks
 
 # local testing
-tests/*.tar.gz
 tests/notes
 tests/bin
 tests/env_1
 tests/env_2
 tests/env_3
+tests/get-pip.py
 
 # Project Notes
 notes
-
-# Reference
-seaborn-0.11.2
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
