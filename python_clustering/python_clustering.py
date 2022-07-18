@@ -2,8 +2,23 @@
 
 from typing import List
 import pandas as pd
-from .utilities import read_utilities
-from sklearn.cluster import KMeans, DBSCAN, AgglomerativeClustering, Birch
+import numpy as np
+from .utilities import read_utilities, anomaly_detection
+from sklearn.cluster import (
+    KMeans,
+    DBSCAN,
+    AgglomerativeClustering,
+    Birch,
+    AffinityPropagation,
+    FeatureAgglomeration,
+    MiniBatchKMeans,
+    SpectralClustering,
+    MeanShift,
+    BisectingKMeans,
+    OPTICS,
+    SpectralBiclustering,
+    SpectralCoclustering,
+)
 from sklearn.mixture import GaussianMixture
 
 
@@ -91,7 +106,7 @@ class Dataset:
         """
         read_utilities.download(dataset_names, overwrite=overwrite)
 
-    def list(self, is_print: bool = True) -> List:
+    def list(self, is_print: bool = False) -> List:
         """
         Listing all available datasets locally.
 
@@ -120,6 +135,12 @@ class Methods:
     def KMeans(*args):
         return KMeans(args)
 
+    def MiniBatchKMeans(*args):
+        return MiniBatchKMeans(args)
+
+    def BisectingKMeans(*args):
+        return BisectingKMeans(args)
+
     def DBSCAN(*args):
         return DBSCAN(args)
 
@@ -132,15 +153,59 @@ class Methods:
     def Birch(*args):
         return Birch(args)
 
+    def AffinityPropagation(*args):
+        return AffinityPropagation(args)
+
+    def FeatureAgglomeration(*args):
+        return FeatureAgglomeration(args)
+
+    def OPTICS(*args):
+        return OPTICS(args)
+
+    def MeanShift(*args):
+        return MeanShift(args)
+
+    def SpectralClustering(*args):
+        return SpectralClustering(args)
+
+    def SpectralBiclustering(*args):
+        return SpectralBiclustering(args)
+
+    def SpectralCoclustering(*args):
+        return SpectralCoclustering(args)
+
 
 class Tasks:
     def __init__():
         pass
 
-    def AnomalyDetection(dataset):
+    def detect_anomalies(
+        dataset: np.array,
+        methods: str = "all_besides_nn",
+        mode="per_class",
+        outliers_fraction=0.05,
+    ):
         """
         Detect anomalies in the passed dataset
         """
+        return anomaly_detection.detect_anomalies(
+            dataset, methods, mode, outliers_fraction
+        )
+
+    def plot_overall_anomaly_classifiers(result, classifiers, show_heatmap=True):
+        return anomaly_detection.plot_overall(
+            result, classifiers, show_heatmap=show_heatmap
+        )
+
+    def plot_individual_anomaly_classifiers(result, classifiers, detected_outliers):
+        return anomaly_detection.plot_classifiers(
+            result, classifiers, detected_outliers
+        )
+
+    def suggest_anomaly_detection_method(dataset):
+        pass
+
+    def suggest_clustering_method(dataset):
         pass
 
     def calculate_number_of_clusters(dataset, methods=["kmeans"]):
@@ -155,4 +220,10 @@ class Tasks:
 
     def cluster_similarity(dataset, method="knn", nearest_neighbors=3):
         """Provides similar known datasets to provided one using knn"""
+        pass
+
+    def classify_semi_labeled_data():
+        pass
+
+    def one_class_clustering():
         pass

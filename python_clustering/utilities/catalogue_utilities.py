@@ -63,6 +63,8 @@ class Catalogue:
         with open(f"{self.PATH_TO_ALL_DATASETS_FOLDER}/README.md", "w") as f:
             writer.stream = f
             writer.write_table()
+            f.write("\n")
+            f.write("* anomaly percentage were calculated using zscore")
 
     def arrange_calculated_data(self, dataset, subfolder, filename):
         dataset_dict = {"stats": {}}
