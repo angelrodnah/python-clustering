@@ -176,14 +176,15 @@ class Methods:
 
 
 class Tasks:
-    def __init__():
+    def __init__(self) -> None:
         pass
 
     def detect_anomalies(
+        self,
         dataset: np.array,
         methods: str = "all_besides_nn",
-        mode="per_class",
-        outliers_fraction=0.05,
+        mode: str = "per_class",
+        outliers_fraction: float = 0.1,
     ):
         """
         Detect anomalies in the passed dataset
@@ -192,38 +193,44 @@ class Tasks:
             dataset, methods, mode, outliers_fraction
         )
 
-    def plot_overall_anomaly_classifiers(result, classifiers, show_heatmap=True):
+    def plot_overall_anomaly_classifiers(self, result, classifiers, show_heatmap=True):
         return anomaly_detection.plot_overall(
             result, classifiers, show_heatmap=show_heatmap
         )
 
-    def plot_individual_anomaly_classifiers(result, classifiers, detected_outliers):
+    def plot_individual_anomaly_classifiers(
+        self, result, classifiers, detected_outliers
+    ):
         return anomaly_detection.plot_classifiers(
             result, classifiers, detected_outliers
         )
 
-    def suggest_anomaly_detection_method(dataset):
+    def suggest_anomaly_detection_method(self, dataset):
         pass
 
-    def suggest_clustering_method(dataset):
+    def suggest_clustering_method(self, dataset):
         pass
 
-    def calculate_number_of_clusters(dataset, methods=["kmeans"]):
+    def calculate_number_of_clusters(self, dataset, methods=["kmeans"]):
         """
         Calculater the number of clusters in the passed dataset
         """
         pass
 
-    def cluster_ensembling(dataset, methods=["kmeans", "gmm", "dbscan"]):
+    def cluster_ensembling(self, dataset, methods=["kmeans", "gmm", "dbscan"]):
         """Provide cluster ensempling"""
         pass
 
-    def cluster_similarity(dataset, method="knn", nearest_neighbors=3):
+    def cluster_similarity(self, dataset, method="knn", nearest_neighbors=3):
         """Provides similar known datasets to provided one using knn"""
         pass
 
-    def classify_semi_labeled_data():
+    def classify_semi_labeled_data(
+        self,
+    ):
         pass
 
-    def one_class_clustering():
+    def one_class_clustering(
+        self,
+    ):
         pass

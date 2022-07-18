@@ -1,3 +1,4 @@
+from asyncio import tasks
 import python_clustering
 
 
@@ -21,5 +22,8 @@ def main():
     print(stats)
     dataset.update_local_info_files()
 
+    tasks = python_clustering.Tasks()
+    data = dataset.load("D31").values
+    anomalies, methods_results = tasks.detect_anomalies(data)
 
 main()

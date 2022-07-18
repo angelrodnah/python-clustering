@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
 import numpy as np
 
+import warnings
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
+
 from pyod.models.ecod import ECOD
 from pyod.models.copod import COPOD
 from pyod.models.abod import ABOD
