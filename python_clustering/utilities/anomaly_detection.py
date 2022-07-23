@@ -3,6 +3,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
 import numpy as np
+from tqdm import tqdm
 
 import warnings
 
@@ -35,6 +36,8 @@ from pyod.models.so_gaal import SO_GAAL
 from pyod.models.mo_gaal import MO_GAAL
 from pyod.models.deep_svdd import DeepSVDD
 from pyod.models.anogan import AnoGAN
+
+from scipy.interpolate import interp2d
 
 
 def build_classifiers(
@@ -167,10 +170,27 @@ def build_classifiers(
 
 
 def predict_outliers(clf, X, raw=False):
-    clf.fit(X)
-    if raw:
-        return clf.decision_function(X)
-    return clf.predict(X)
+    try:
+        clf.fit(X)
+        if raw:
+            return clf.decision_function(X)
+        return clf.predict(X)
+    except ValueError as e:
+        print(clf, e)
+    return None
+
+
+def remove_clf(obj, key):
+    if key in obj:
+        del obj[key]
+    return obj
+
+
+def update_dictionaries(broken_clf, dictionaries=[]):
+    for key in broken_clf:
+        for idx, arg in enumerate(dictionaries):
+            dictionaries[idx] = remove_clf(arg, key)
+    return dictionaries
 
 
 def get_number_of_methods(classifiers):
@@ -179,36 +199,49 @@ def get_number_of_methods(classifiers):
 
 def detect_outliers(X, classifiers):
     results = {clf: predict_outliers(classifiers[clf], X) for clf in classifiers}
-    return results
+    broken_clf = [k for k, v in results.items() if v is None]
+    return results, broken_clf
 
 
 def aggregate_outliers(results):
     return np.array(list(results.values())).sum(axis=0) / len(results)
 
 
-def run_ontlier_detection(X, classifiers, mode="per_class"):
+def run_outlier_detection(X, classifiers, mode="per_class"):
     final_arr = np.array([])
     if mode == "per_class":
         detected_outliers_dict = {}
+        arrs = {}
         for _class in np.unique(X[:, 2]):
-            arr = X[X[:, 2] == _class]
-            detected_outliers_dict[_class] = detect_outliers(arr[:, 0:2], classifiers)
+            arrs[_class] = X[X[:, 2] == _class]
+            detected_outliers_dict[_class], broken_clf = detect_outliers(
+                arrs[_class][:, 0:2], classifiers
+            )
+        for _class in np.unique(X[:, 2]):
             overall = aggregate_outliers(detected_outliers_dict[_class])
             if final_arr.size:
                 final_arr = np.vstack(
-                    (final_arr, np.hstack((arr, overall.reshape(-1, 1))))
+                    (final_arr, np.hstack((arrs[_class], overall.reshape(-1, 1))))
                 )
             else:
-                final_arr = np.hstack((arr, overall.reshape(-1, 1)))
+                final_arr = np.hstack((arrs[_class], overall.reshape(-1, 1)))
     else:
-        detected_outliers_dict = detect_outliers(X[:, 0:2], classifiers)
+        detected_outliers_dict, broken_clf = detect_outliers(X[:, 0:2], classifiers)
+        detected_outliers_dict, classifiers = update_dictionaries(
+            broken_clf=broken_clf, dictionaries=[detected_outliers_dict, classifiers]
+        )
         overall = aggregate_outliers(detected_outliers_dict)
         final_arr = np.hstack((X, overall.reshape(-1, 1)))
     return final_arr, detected_outliers_dict
 
 
 def plot_classifiers(
-    X, classifiers, detected_outliers=None, increase_coef=0.05, plot_per_row=3
+    X,
+    classifiers,
+    detected_outliers=None,
+    increase_coef=0.05,
+    plot_per_row=3,
+    verbose=True,
 ):
     """
     X[:,:-2] - data columns
@@ -221,20 +254,29 @@ def plot_classifiers(
     min_y, max_y = X[:, 1].min() - abs(increase_coef * X[:, 1].min()), X[
         :, 1
     ].max() + abs(increase_coef * X[:, 1].max())
-    xx, yy = np.meshgrid(np.linspace(min_x, max_x, 100), np.linspace(min_y, max_y, 100))
+
+    x = np.linspace(min_x, max_x, 100)
+    y = np.linspace(min_y, max_y, 100)
+    xx, yy = np.meshgrid(x, y)
 
     figsize = (15, int(len(classifiers) / plot_per_row) * 3)
     plt.figure(figsize=figsize)
 
-    for i, (clf_name, clf) in enumerate(classifiers.items()):
+    for i, (clf_name, clf) in tqdm(enumerate(classifiers.items()), disable=not verbose):
         y_pred = detected_outliers[clf_name]
         X_inline = X[np.where(y_pred == 0)][:, :-2]
         X_outline = X[np.where(y_pred == 1)][:, :-2]
-        scores_pred = clf.decision_function(X[:, :-2]) * -1
 
+        scores_pred = clf.decision_function(X[:, :-2]) * -1
         Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()]) * -1
         Z = Z.reshape(xx.shape)
-        scores_pred = np.maximum(scores_pred, Z)
+
+        f = interp2d(x, y, Z, kind="linear")
+        x_new = np.linspace(min_x, max_x, X.shape[0])
+        y_new = np.linspace(min_y, max_y, X.shape[0])
+        Z_new = f(x_new, y_new)
+
+        scores_pred = np.maximum(scores_pred, Z_new)
 
         threshold = np.percentile(scores_pred, X_outline.shape[0] * 100 / X.shape[0])
 
@@ -244,7 +286,7 @@ def plot_classifiers(
         subplot.contourf(
             xx, yy, Z, levels=np.linspace(Z.min(), threshold, 7), cmap=plt.cm.YlGnBu_r
         )
-        a = subplot.contour(xx, yy, Z, levels=[threshold], linewidths=2, colors="green")
+        subplot.contour(xx, yy, Z, levels=[threshold], linewidths=2, colors="green")
         subplot.contourf(xx, yy, Z, levels=[threshold, Z.max()], colors="orange")
 
         b = subplot.scatter(
@@ -273,6 +315,7 @@ def plot_overall(
     show_heatmap=False,
     increase_coef=0.05,
     figsize=(12, 8),
+    grid_size=200,
 ):
     plt.figure(figsize=figsize)
     if not calculated_class:
@@ -287,12 +330,12 @@ def plot_overall(
     )
 
     if show_heatmap:
+        x = np.linspace(min_x, max_x, grid_size)
+        y = np.linspace(min_y, max_y, grid_size)
+        xx, yy = np.meshgrid(x, y)
         k = gaussian_kde([X[:, 0], X[:, 1]])
-        xi, yi = np.mgrid[
-            min_x : max_x : X[:, 0].size * 1j * 3, min_y : max_y : X[:, 1].size * 1j * 3
-        ]
-        zi = k(np.vstack([xi.flatten(), yi.flatten()]))
-        plt.pcolormesh(xi, yi, zi.reshape(xi.shape), shading="auto", cmap="YlGnBu_r")
+        zi = k(np.vstack([xx.flatten(), yy.flatten()]))
+        plt.pcolormesh(xx, yy, zi.reshape(xx.shape), shading="auto", cmap="YlGnBu_r")
 
     plt.scatter(X[:, 0], X[:, 1], s=75, c=calculated_class, cmap="Reds", edgecolor="k")
     cbar = plt.colorbar()
@@ -309,9 +352,10 @@ def detect_anomalies(
     methods: str = "all_besides_nn",
     mode: str = "per_class",
     outliers_fraction=0.05,
+    random_state: int = 42,
 ):
     classifiers = build_classifiers(
-        methods=methods, outliers_fraction=outliers_fraction
+        methods=methods, outliers_fraction=outliers_fraction, random_state=random_state
     )
-    result, detected_outliers = run_ontlier_detection(dataset, classifiers, mode=mode)
-    return result, detected_outliers
+    result, detected_outliers = run_outlier_detection(dataset, classifiers, mode=mode)
+    return result, detected_outliers, classifiers

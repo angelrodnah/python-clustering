@@ -199,10 +199,10 @@ class Tasks:
         )
 
     def plot_individual_anomaly_classifiers(
-        self, result, classifiers, detected_outliers
+        self, result, classifiers, detected_outliers, verbose=True
     ):
         return anomaly_detection.plot_classifiers(
-            result, classifiers, detected_outliers
+            result, classifiers, detected_outliers, verbose=True
         )
 
     def suggest_anomaly_detection_method(self, dataset):
