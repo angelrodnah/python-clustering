@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde
 import numpy as np
 from tqdm import tqdm
+from collections import defaultdict
 
 import warnings
 
@@ -210,21 +211,26 @@ def aggregate_outliers(results):
 def run_outlier_detection(X, classifiers, mode="per_class"):
     final_arr = np.array([])
     if mode == "per_class":
-        detected_outliers_dict = {}
+        inv_detected_outliers_dict = {}
         arrs = {}
         for _class in np.unique(X[:, 2]):
             arrs[_class] = X[X[:, 2] == _class]
-            detected_outliers_dict[_class], broken_clf = detect_outliers(
+            inv_detected_outliers_dict[_class], broken_clf = detect_outliers(
                 arrs[_class][:, 0:2], classifiers
             )
         for _class in np.unique(X[:, 2]):
-            overall = aggregate_outliers(detected_outliers_dict[_class])
+            overall = aggregate_outliers(inv_detected_outliers_dict[_class])
             if final_arr.size:
                 final_arr = np.vstack(
                     (final_arr, np.hstack((arrs[_class], overall.reshape(-1, 1))))
                 )
             else:
                 final_arr = np.hstack((arrs[_class], overall.reshape(-1, 1)))
+        detected_outliers_dict = defaultdict(dict)
+        for k, v in inv_detected_outliers_dict.items():
+            for k2, v2 in v.items():
+                detected_outliers_dict[k2][k] = v2
+        detected_outliers_dict = dict(detected_outliers_dict)
     else:
         detected_outliers_dict, broken_clf = detect_outliers(X[:, 0:2], classifiers)
         detected_outliers_dict, classifiers = update_dictionaries(
@@ -242,6 +248,7 @@ def plot_classifiers(
     increase_coef=0.05,
     plot_per_row=3,
     verbose=True,
+    mode="overall",
 ):
     """
     X[:,:-2] - data columns
@@ -264,30 +271,40 @@ def plot_classifiers(
 
     for i, (clf_name, clf) in tqdm(enumerate(classifiers.items()), disable=not verbose):
         y_pred = detected_outliers[clf_name]
+        if mode == "per_class":
+            y_pred = np.hstack((y_pred.values())) if type(y_pred) == dict else y_pred
         X_inline = X[np.where(y_pred == 0)][:, :-2]
         X_outline = X[np.where(y_pred == 1)][:, :-2]
-
-        scores_pred = clf.decision_function(X[:, :-2]) * -1
-        Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()]) * -1
-        Z = Z.reshape(xx.shape)
-
-        f = interp2d(x, y, Z, kind="linear")
-        x_new = np.linspace(min_x, max_x, X.shape[0])
-        y_new = np.linspace(min_y, max_y, X.shape[0])
-        Z_new = f(x_new, y_new)
-
-        scores_pred = np.maximum(scores_pred, Z_new)
-
-        threshold = np.percentile(scores_pred, X_outline.shape[0] * 100 / X.shape[0])
 
         subplot = plt.subplot(
             int(len(classifiers) / plot_per_row) + 1, plot_per_row, i + 1
         )
-        subplot.contourf(
-            xx, yy, Z, levels=np.linspace(Z.min(), threshold, 7), cmap=plt.cm.YlGnBu_r
-        )
-        subplot.contour(xx, yy, Z, levels=[threshold], linewidths=2, colors="green")
-        subplot.contourf(xx, yy, Z, levels=[threshold, Z.max()], colors="orange")
+
+        if mode == "overall":
+            scores_pred = clf.decision_function(X[:, :-2]) * -1
+            Z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()]) * -1
+            Z = Z.reshape(xx.shape)
+
+            f = interp2d(x, y, Z, kind="linear")
+            x_new = np.linspace(min_x, max_x, X.shape[0])
+            y_new = np.linspace(min_y, max_y, X.shape[0])
+            Z_new = f(x_new, y_new)
+
+            scores_pred = np.maximum(scores_pred, Z_new)
+
+            threshold = np.percentile(
+                scores_pred, X_outline.shape[0] * 100 / X.shape[0]
+            )
+
+            subplot.contourf(
+                xx,
+                yy,
+                Z,
+                levels=np.linspace(Z.min(), threshold, 7),
+                cmap=plt.cm.YlGnBu_r,
+            )
+            subplot.contour(xx, yy, Z, levels=[threshold], linewidths=2, colors="green")
+            subplot.contourf(xx, yy, Z, levels=[threshold, Z.max()], colors="orange")
 
         b = subplot.scatter(
             X_inline[:, 0], X_inline[:, 1], c="white", s=50, edgecolor="k"

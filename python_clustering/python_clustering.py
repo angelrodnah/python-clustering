@@ -185,24 +185,55 @@ class Tasks:
         methods: str = "all_besides_nn",
         mode: str = "per_class",
         outliers_fraction: float = 0.1,
+        random_state: int = 42,
     ):
         """
         Detect anomalies in the passed dataset
         """
         return anomaly_detection.detect_anomalies(
-            dataset, methods, mode, outliers_fraction
+            dataset,
+            methods=methods,
+            mode=mode,
+            outliers_fraction=outliers_fraction,
+            random_state=random_state,
         )
 
-    def plot_overall_anomaly_classifiers(self, result, classifiers, show_heatmap=True):
+    def plot_overall_anomaly_classifiers(
+        self,
+        result,
+        classifiers,
+        calculated_class=None,
+        show_heatmap=False,
+        increase_coef=0.05,
+        figsize=(12, 8),
+    ):
         return anomaly_detection.plot_overall(
-            result, classifiers, show_heatmap=show_heatmap
+            result,
+            classifiers,
+            calculated_class=calculated_class,
+            show_heatmap=show_heatmap,
+            increase_coef=increase_coef,
+            figsize=figsize,
         )
 
     def plot_individual_anomaly_classifiers(
-        self, result, classifiers, detected_outliers, verbose=True
+        self,
+        result,
+        classifiers,
+        detected_outliers,
+        increase_coef=0.05,
+        plot_per_row=3,
+        verbose=True,
+        mode="overall",
     ):
         return anomaly_detection.plot_classifiers(
-            result, classifiers, detected_outliers, verbose=True
+            result,
+            classifiers,
+            detected_outliers,
+            increase_coef=increase_coef,
+            plot_per_row=plot_per_row,
+            verbose=verbose,
+            mode=mode,
         )
 
     def suggest_anomaly_detection_method(self, dataset):
