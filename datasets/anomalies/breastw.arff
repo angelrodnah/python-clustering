@@ -1,3 +1,11 @@
+%The Breast Cancer Wisconsin (Original) dataset from UCI machine learning repository is a classification dataset, which records the measurements for breast cancer cases. There are two classes, benign and malignant. This dataset has dimensionality 9. The malignant class of this dataset is considered as outliers, while points in the benign class are considered inliers.
+%
+%Source (citation)
+%Liu, Fei Tony, Kai Ming Ting, and Zhi-Hua Zhou. “Isolation forest.” 2008 Eighth IEEE International Conference on Data Mining. IEEE, 2008.
+%K. M. Ting, J. T. S. Chuan, and F. T. Liu. “Mass: A New Ranking Measure for Anomaly Detection.“, IEEE Transactions on Knowledge and Data Engineering, 2009.
+%F. Keller, E. Muller, K. Bohm.“HiCS: High-contrast subspaces for density-based outlier ranking.” ICDE, 2012.
+%Description: X = Multi-dimensional point data, y = labels (1 = outliers, 0 = inliers)
+%Source: http://odds.cs.stonybrook.edu/breast-cancer-wisconsin-original-dataset/
 @relation breastw
 @attribute X_1 integer
 @attribute X_2 integer

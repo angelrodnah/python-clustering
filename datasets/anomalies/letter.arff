@@ -1,3 +1,10 @@
+%The original letter recognition dataset from UCI machine learning repository is a multi-class classification dataset. The objective is to identify each of a large number of black-and-white rectangular pixel displays as one of the 26 capital letters in the English alphabet, where letters of the alphabet are represented in 16 dimensions. To get data suitable for outlier detection, we subsample data from 3 letters to form the normal class and randomly concatenate pairs of them so that their dimensionality doubles. To form the outlier class, we randomly select few instances of letters that are not in the normal class and concatenate them with instances from the normal class. The concatenation process is performed in order to make the detection much more challenging as each outlier will also show some normal attribute values. In total, we have 1500 normal data points and 100 outliers (6.25% outliers) in 32 dimensions.
+%
+%Source (citation)
+%Learing Outlier Ensembles: The Best of Both Worlds – Supervised and Unsupervised. Barbora Micenkova, Brian McWilliams, and Ira Assent, KDD ODD2 Workshop, 2014.
+%Less is More: Building Selective Anomaly Ensemble. Shebuti Rayana, Leman Akoglu, Transactions on Knowledge Discovery from Data (TKDD), May, 2016
+%Description: X = Multi-dimensional point data, y = labels (1 = outliers, 0 = inliers)
+%Source: http://odds.cs.stonybrook.edu/letter-recognition-dataset/
 @relation letter
 @attribute X_1 integer
 @attribute X_2 integer

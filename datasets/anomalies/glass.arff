@@ -1,3 +1,11 @@
+%The original glass identification dataset from UCI machine learning repository is a classification dataset. The study of classification of types of glass was motivated by criminological investigation. At the scene of the crime, the glass left can be used as evidence, if correctly identified. This dataset contains attributes regarding several glass types (multi-class). Here, class 6 is a clear minority class, as such points of class 6 are marked as outliers, while all other points are inliers.
+%
+%Source (citation)
+%F. Keller, E. Muller, K. Bohm.“HiCS: High-contrast subspaces for density-based outlier ranking.” ICDE, 2012.
+%C. C. Aggarwal and S. Sathe, “Theoretical foundations and algorithms for outlier ensembles.” ACM SIGKDD Explorations Newsletter, vol. 17, no. 1, pp. 24–47, 2015.
+%Saket Sathe and Charu C. Aggarwal. LODES: Local Density meets Spectral Outlier Detection. SIAM Conference on Data Mining, 2016.
+%Description: X = Multi-dimensional point data, y = labels (1 = outliers, 0 = inliers)
+%Source: http://odds.cs.stonybrook.edu/glass-data/
 @relation glass
 @attribute X_1 real
 @attribute X_2 real

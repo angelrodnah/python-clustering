@@ -1,3 +1,11 @@
+%The original ionosphere dataset from UCI machine learning repository is a binary classification dataset with dimensionality 34. There is one attribute having values all zeros, which is discarded. So the total number of dimensions are 33. The ‘bad’ class is considered as outliers class and the ‘good’ class as inliers.
+%
+%Source (citation)
+%Liu, Fei Tony, Kai Ming Ting, and Zhi-Hua Zhou. “Isolation forest.” 2008 Eighth IEEE International Conference on Data Mining. IEEE, 2008.
+%K. M. Ting, J. T. S. Chuan, and F. T. Liu. “Mass: A New Ranking Measure for Anomaly Detection.“, IEEE Transactions on Knowledge and Data Engineering, 2009.
+%F. Keller, E. Muller, K. Bohm.“HiCS: High-contrast subspaces for density-based outlier ranking.” ICDE, 2012.
+%Description: X = Multi-dimensional point data, y = labels (1 = outliers, 0 = inliers)
+%Source: http://odds.cs.stonybrook.edu/ionosphere-dataset/
 @relation ionosphere
 @attribute X_1 real
 @attribute X_2 real

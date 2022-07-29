@@ -1,3 +1,9 @@
+%The original Ecoli dataset from UCI machine learning repository is a multiclass classification dataset having 8 attributes. Here, 7 numerical attributes are utilized and the attribute “sequence name” is omitted. Among the 8 classes omL, imL, and imS are the minority classes and used as outliers. All the other majority classes are used as inliers.
+%
+%Source (citation)
+%Saket Sathe and Charu C. Aggarwal. LODES: Local Density meets Spectral Outlier Detection. SIAM Conference on Data Mining, 2016.
+%Description: X = Multi-dimensional point data, y = labels (1 = outliers, 0 = inliers)
+%Source: http://odds.cs.stonybrook.edu/ecoli-dataset/
 @relation ecoli
 @attribute X_1 real
 @attribute X_2 real

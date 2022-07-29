@@ -1,3 +1,11 @@
+%The original arrhythmia dataset from UCI machine learning repository is a multi-class classification dataset with dimensionality 279. There are five categorical attributes which are discarded here, totalling 274 attributes. The smallest classes, i.e., 3, 4, 5, 7, 8, 9, 14, 15 are combined to form the outliers class and the rest of the classes are combined to form the inliers class.
+%
+%Source (citation)
+%Liu, Fei Tony, Kai Ming Ting, and Zhi-Hua Zhou. “Isolation forest.” 2008 Eighth IEEE International Conference on Data Mining. IEEE, 2008.
+%K. M. Ting, J. T. S. Chuan, and F. T. Liu. “Mass: A New Ranking Measure for Anomaly Detection.“, IEEE Transactions on Knowledge and Data Engineering, 2009.
+%F. Keller, E. Muller, K. Bohm.“HiCS: High-contrast subspaces for density-based outlier ranking.” ICDE, 2012.
+%Description: X = Multi-dimensional point data, y = labels (1 = outliers, 0 = inliers)
+%Source: http://odds.cs.stonybrook.edu/arrhythmia-dataset/
 @relation arrhythmia
 @attribute X_1 real
 @attribute X_2 real
