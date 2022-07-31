@@ -2,7 +2,7 @@
     "PATH_TO_ALL_DATASETS_FOLDER" : "./../datasets",
     "PATH_TO_LOCAL" : "datasets",
     "PATH_TO_GITHUB" : "https://github.com/IvanReznikov/python-clustering/raw/main/datasets",
-    "SUBFOLDERS" : ["real","artificial"],
+    "SUBFOLDERS" : ["real","artificial", "anomalies"],
     "COLUMN_PROPERTY_NAMES" : [
         "name",
         "origin",
