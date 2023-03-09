@@ -1,3 +1,4 @@
+from typing import Tuple
 from scipy import stats
 from statistics import NormalDist
 import numpy as np
@@ -48,14 +49,20 @@ class Dataset:
             4,
         )
 
-    def calculate_number_of_nan(self):
-        return (
-            self.pd_dataframe.isnull().sum().sum()
-            / self.pd_dataframe.shape[0]
-            / self.pd_dataframe.shape[1]
-        )
+    def calculate_number_of_nan(self) -> float:
+        """Returning percentage of NaN(null) values
 
-    def calculate_std_mean(self):
+        Returns:
+            float: percentage of NaN(null) values in self.df
+        """
+        return self.pd_dataframe.isnull().sum().sum() / self.pd_dataframe.size
+
+    def calculate_std_mean(self) -> Tuple[dict, dict]:
+        """Calculating std and mean per class in self.df
+
+        Returns:
+            Tuple[dict, dict]: mean and std dictionaries
+        """
         if self.number_of_clusters > 1:
             return self.pd_dataframe.groupby("class").std().to_dict(
                 "index"
@@ -63,7 +70,15 @@ class Dataset:
         else:
             return self.pd_dataframe.std().to_dict(), self.pd_dataframe.mean().to_dict()
 
-    def calculate_estimate_overlap(self):
+    def calculate_estimate_overlap(self, decimals: int = 4) -> Tuple[float, float]:
+        """Calculating maxmimum and average overlap of clusters
+
+        Args:
+            decimals (int, optional): Rounding decimal points. Defaults to 4.
+
+        Returns:
+            Tuple[float, float]: maxmimum and average overlap of clusters
+        """
         overlap_list = []
         for idx, cluster1 in enumerate(self.classes):
             for cluster2 in self.classes[idx + 1 :]:
@@ -82,9 +97,22 @@ class Dataset:
                         )
                     )
                 overlap_list.append(np.prod(overlap))
-        return np.round(np.max(overlap_list), 4), np.round(np.mean(overlap_list), 4)
+        return np.round(np.max(overlap_list), decimals), np.round(
+            np.mean(overlap_list), decimals
+        )
 
-    def calculate_dataframe_shape(self, rows=True, cols=True):
+    def calculate_dataframe_shape(
+        self, rows: bool = True, cols: bool = True
+    ) -> int or None or Tuple[int, int]:
+        """Returns shape of the dataframe based on rows and cols bool values
+
+        Args:
+            rows (bool, optional): Return number of rows. Defaults to True.
+            cols (bool, optional): Return number of cols. Defaults to True.
+
+        Returns:
+            int or None or Tuple[int, int]: shape of df/params passed
+        """
         if rows:
             if cols:
                 return self.pd_dataframe.shape
@@ -94,8 +122,17 @@ class Dataset:
         return None
 
     def calculate_is_imbalanced(
-        self, shapiro_alpha: float = 0.05, binary_alpha=0.2
+        self, shapiro_alpha: float = 0.05, binary_alpha: float = 0.2
     ) -> bool:
+        """Calculating if the clusters are imbalanced
+
+        Args:
+            shapiro_alpha (float, optional): stats.shapiro threshold. Defaults to 0.05.
+            binary_alpha (float, optional): manual threshold for 2 classes. Defaults to 0.2.
+
+        Returns:
+            bool: _description_
+        """
         if self.number_of_clusters == 2:
             return (
                 self.pd_dataframe["class"].value_counts().min()
@@ -109,7 +146,15 @@ class Dataset:
             _, p = stats.shapiro(class_frequency)
             return p < shapiro_alpha
 
-    def calculate_number_of_outliers(self, number_of_std=2):
+    def calculate_number_of_outliers(self, number_of_std: float = 2.0) -> float:
+        """Calculating a percentage of outliers in clusters
+
+        Args:
+            number_of_std (float, optional): std threshold. Defaults to 2.0.
+
+        Returns:
+            float: percentage of outliers
+        """
         if self.number_of_clusters > 1:
             return (
                 self.pd_dataframe.groupby("class")

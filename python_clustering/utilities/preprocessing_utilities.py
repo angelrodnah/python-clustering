@@ -65,7 +65,6 @@ def string_handling(
         df - pd.DataFrame: modified cluster dataframe
     """
     for col in df.select_dtypes("object"):
-
         # check for binary values
         _col = df[col].str.decode(decoder)
         if not _col.isnull().all():

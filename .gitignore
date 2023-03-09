@@ -1,13 +1,5 @@
-# Data and local purposes
-draft_notebooks
-
-# local testing
-tests/notes
-tests/bin
-tests/env_1
-tests/env_2
-tests/env_3
-tests/get-pip.py
+# Dev Environment
+env_dev_clustering
 
 # Project Notes
 notes
@@ -82,6 +74,9 @@ instance/
 
 # Scrapy stuff:
 .scrapy
+
+#vscode
+.vscode
 
 # Sphinx documentation
 docs/_build/

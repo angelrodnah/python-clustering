@@ -18,7 +18,7 @@ def read_arff(filepath: str, mode: str = "scipy_arff"):
         mode - str: scipy_arff | arff
 
     Return:
-        arff reade format
+        arff reader format
     """
     if mode == "scipy_arff":
         return scipy_arff.loadarff(filepath)
@@ -218,6 +218,7 @@ def list_local_datasets() -> List:
 
 
 def update_local_jsons():
+    return_bool = True
     root_folder = get_root_folder()
     catalogue_info = load_catalogue_info()
     github_path = catalogue_info["PATH_TO_GITHUB"]
@@ -229,6 +230,8 @@ def update_local_jsons():
             print(f"{file} successfully updated")
         else:
             print(f"{file} wasn't updated")
+            return_bool = False
+    return return_bool
 
 
 if __name__ == "__main__":

@@ -1,48 +1,50 @@
 python_clustering: all you need for clustering
 ==============================================
 
-python_clustering is a Python library based on sklearn and numpy. It
-provides a wide range of functionality one might consider using during
-clustering
+python_clustering is a Python library based on sklearn and numpy. 
+
+It provides a wide range of functionality one might consider using during clustering
 
 Documentation
 -------------
 
-ToDo
+Examples
+-------------
+Some of the examples of using the package are show in the respective 
+`folder <https://github.com/IvanReznikov/python-clustering/tree/main/examples>`_
 
 Dependencies
 ------------
 
-::
-
-   Python >= 3.6
-   -------------
-   scipy>=1.7.3
-   pandas>=1.3.4
-   scikit-learn>=1.1.1
-   numpy>=1.19.5
-   arff==0.9
-   pytablewriter==0.64.2
-   pyod>=1.0.1
-   requests>=2.28.1
-   combo>=0.1.3
-   tensorflow==2.7.0
+* python = ">=3.8,<3.12"
+* pandas = "^1.5.3"
+* arff = "^0.9"
+* scipy = "^1.10.1"
+* requests = "^2.28.2"
+* matplotlib = "^3.7.1"
+* tqdm = "^4.65.0"
+* pyod = "^1.0.7"
+* tensorflow = "^2.11.0"
 
 Installation
 ------------
 
 ``pip install python-clustering``
 
-Examples
---------
+Pytest
+-----------
+To run tests
+We might specify folder or script:
 
-ToDo
+``pytest -q tests``
 
 Development
 -----------
 
-python-clustering development takes place on Github:
-https://github.com/IvanReznikov/python-clustering Please submit bugs
+python-clustering development takes place on `Github:
+<https://github.com/IvanReznikov/python-clustering>`_ 
+
+Please submit bugs
 that you encounter to the `issue
 tracker <https://github.com/IvanReznikov/python-clustering/issues>`__
 

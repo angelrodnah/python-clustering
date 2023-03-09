@@ -125,7 +125,7 @@ class Dataset:
         """
         Update local files from github source
         """
-        read_utilities.update_local_jsons()
+        return read_utilities.update_local_jsons()
 
 
 class Methods:
