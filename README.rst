@@ -16,7 +16,7 @@ Some of the examples of using the package are show in the respective
 Dependencies
 ------------
 
-* python = ">=3.8,<3.12"
+* python = ">=3.8,<3.13"
 * pandas = "^1.5.3"
 * arff = "^0.9"
 * scipy = "^1.10.1"
